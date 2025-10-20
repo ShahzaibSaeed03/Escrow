@@ -1,0 +1,36 @@
+<div class="bg-gray-50 flex items-center justify-center min-h-screen font-sans">
+    <div class="bg-white border border-gray-100 shadow-md rounded-xl p-8 w-full max-w-md text-start">
+        <!-- Heading -->
+        <h2 class="text-lg font-semibold text-gray-800 mb-2">
+            Account Successfully Created
+        </h2>
+        <p class="text-gray-500 text-sm mb-6">
+            In order to use this application, two-factor authentication (2FA) must
+            be activated to access the data. Follow the instructions below.
+        </p>
+        <p class="text-gray-500 text-sm mb-6">
+            The two-factor authentication generates a random code that you will need
+            during setup and login. Make sure you have an authenticator app
+            installed on your mobile phone. If it is not installed yet, you can find
+            links to some apps below depending on your preference and type of mobile
+            phone:
+        </p>
+        <p>
+            Google Authenticator:
+            <a href="#" class="text-sky-500 text-[14px] font-semibold underline hover:underline">iOS</a>
+            |
+            <a href="#" class="text-sky-500 text-[14px] font-semibold underline hover:underline">Android</a>
+        </p>
+        <p>
+            Microsoft Authenticator:
+            <a href="#" class="text-sky-500 text-[14px] font-semibold underline hover:underline">iOS</a>
+            |
+            <a href="#" class="text-sky-500 text-[14px] font-semibold underline hover:underline">Android</a>
+        </p>
+        <!-- Reset Button -->
+        <button type="submit" routerLink="/2fa-authentication"
+            class="w-full mt-5 bg-sky-500 hover:bg-sky-600 text-white font-medium py-2 rounded-md transition">
+            Enable
+        </button>
+    </div>
+</div>

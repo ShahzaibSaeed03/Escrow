@@ -1,0 +1,128 @@
+<div class="antialiased text-gray-700" style="font-family: 'Montserrat', sans-serif">
+    <div id="app" class="min-h-screen flex">
+        <main class="flex-1 grid grid-cols-2">
+            <section class="bg-white p-6 sm:p-10 md:p-14 lg:p-16 flex flex-col order-1">
+                <div class="max-w-2xl">
+                    <h1 class="text-2xl font-bold text-gray-900 mb-3">
+                        Create Account
+                    </h1>
+                    <p class="text-sm text-gray-500 mb-8">
+                        Already have an account?
+                        <a href="#" class="text-sky-500 text-[14px] font-semibold underline hover:underline">Sign In</a>
+                    </p>
+
+                    <div class="flex items-center gap-6 mb-10">
+                        <div class="flex items-center gap-6 w-full">
+                            <div class="flex items-center gap-6 w-full">
+                                <div class="flex items-center w-full">
+                                    <div class="step-circle flex items-center justify-center bg-white border-[#20b1ec]">
+                                        <span
+                                            class="text-blue font-semibold bg-[#20b1ec] rounded-full w-[36px] h-[36px] flex items-center justify-center text-white">1</span>
+                                    </div>
+                                    <div class="flex-1 h-0.5 bg-[#20b1ec]"></div>
+                                    <div
+                                        class="step-circle flex items-center justify-center bg-white border border-[#20b1ec]">
+                                        <span
+                                            class="text-white font-semibold bg-[#20b1ec] rounded-full w-[36px] h-[36px] flex items-center justify-center">2</span>
+                                    </div>
+                                    <div class="flex-1 h-0.5 bg-gray-200"></div>
+                                    <div
+                                        class="step-circle flex items-center justify-center bg-white border border-gray-200">
+                                        <span
+                                            class="text-blue rounded-full w-[36px] h-[36px] flex items-center justify-center bg-blue-300 font-semibold">3</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-sm font-bold text-gray-800 mb-4">
+                        How does iDIN work?
+                    </h3>
+                    <div>
+                        <p class="text-[14px] mb-2">
+                            1:Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        </p>
+                        <p class="text-[14px] mb-2">
+                            2:Fusce auctor justo massa, eget vehicula massa sagittis et.
+                            Maecenas mattis massa pharetra egestas varius. Sed rhoncus sit
+                            amet mauris eget facilisis.
+                        </p>
+                        <p class="text-[14px] mb-2">
+                            3:Praesent porta nunc enim, eget vehicula dui consequat vel.
+                            Praesent sed odio pellentesque, cursus ex sit amet, tincidunt
+                            turpis.
+                        </p>
+                    </div>
+                    <h3 class="text-sm font-bold text-gray-800 mb-4 mt-4">
+                        Select Bank for iDIN
+                    </h3>
+                    <select
+                        class="w-full border border-gray-300 rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400">
+                        <option value="">Select bank...</option>
+                        <option value="1">Bank Name</option>
+                        <option value="2">Bank Name</option>
+                        <option value="3">Bank Name</option>
+                    </select>
+                    <div class="flex justify-between md:justify-between mt-12">
+                        <button (click)="onBack() "
+                            class="px-6 py-2.5 border border-gray-400 text-sky-700 font-semibold rounded-md shadow-sm hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-300">
+                            Back
+                        </button>
+                        <button routerLink="/registration-complete"
+                            class="px-6 py-2.5 bg-blue-500 text-white font-semibold rounded-md shadow-sm hover:bg-sky-200 focus:outline-none focus:ring-2 focus:ring-sky-300">
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="grad-right text-white p-6 sm:p-10 md:p-14 lg:p-16 flex items-center justify-center order-2">
+                <div class="max-w-md text-center">
+                    <div class="bg-white rounded-full p-4 w-16 h-16 mx-auto flex items-center justify-center mb-6">
+                        <img src="assets/Escrow.png" alt="" />
+                    </div>
+                    <h2 class="text-2xl font-semibold mb-3">Escrow</h2>
+                    <p class="text-white/90 mb-8 text-left text-sm sm:text-base leading-relaxed">
+                        “EscrowBuild protects both homeowners and contractors by securely
+                        holding payments until work is completed to satisfaction.”
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div
+                            class="rounded-xl p-6 border border-white/20 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.15)_0%,transparent_70%),radial-gradient(circle_at_top_right,rgba(255,255,255,0.15)_0%,transparent_70%)] transition-transform hover:scale-105">
+                            <div class="flex flex-col items-center">
+                                <div
+                                    class="rounded-full border border-white/20 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.15)_0%,transparent_70%),radial-gradient(circle_at_top_right,rgba(255,255,255,0.15)_0%,transparent_70%)] p-5">
+                                    <img src="assets/for-contractors.png" alt="" />
+                                </div>
+                                <h3 class="text-[16px] font-semibold mt-3 mb-1">
+                                    For contractors
+                                </h3>
+                                <p class="text-white/80 text-sm text-center">
+                                    Get guaranteed payment for completed work
+                                </p>
+                            </div>
+                        </div>
+
+                        <div
+                            class="rounded-xl p-6 border border-white/20 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.15)_0%,transparent_70%),radial-gradient(circle_at_top_right,rgba(255,255,255,0.15)_0%,transparent_70%)] transition-transform hover:scale-105">
+                            <div class="flex flex-col items-center">
+                                <div
+                                    class="rounded-full border border-white/20 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.15)_0%,transparent_70%),radial-gradient(circle_at_top_right,rgba(255,255,255,0.15)_0%,transparent_70%)] p-5">
+                                    <img src="assets/for-homeowners.png" alt="" />
+                                </div>
+                                <h3 class="text-[16px] font-semibold mt-3 mb-1">
+                                    For homeowners
+                                </h3>
+                                <p class="text-white/80 text-sm text-center">
+                                    Pay only when work is completed to your satisfaction
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </div>
+</div>
