@@ -3,7 +3,7 @@ import { SignIn } from './Auth/login/sign-in/sign-in';
 import { Verify } from './Auth/login/verify/verify';
 import { Forget } from './Auth/forget/forget/forget';
 import { SetNewPassword } from './Auth/forget/set-new-password/set-new-password';
-import { PasswprdUpdated } from './Auth/forget/password-updated/password-updated';
+import { PasswordUpdated } from './Auth/forget/password-updated/password-updated';
 import { CreateAccount } from './Auth/register/create-account/create-account';
 import { PersnalAccount } from './Auth/register/persnal-account/persnal-account/persnal-account';
 import { Idin } from './Auth/register/persnal-account/idin/idin';
@@ -19,7 +19,7 @@ export const routes: Routes = [
     {path:"verify", component: Verify},
     {path:"forget",component:Forget},
     {path:"set-new-password", component:SetNewPassword},
-    {path:"password-updated", component:PasswprdUpdated},
+    {path:"password-updated", component:PasswordUpdated},
     {path:"register", component:CreateAccount},
     {path:"persnal-account",component:PersnalAccount},
     {path:"idin-registration",component:Idin},
