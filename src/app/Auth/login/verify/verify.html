@@ -1,62 +1,70 @@
-  <div class="bg-gray-50 flex items-center justify-center min-h-screen font-sans">
-    <div
-      class="bg-white shadow-md rounded-xl p-8 w-full max-w-md text-start border border-gray-100"
-    >
-      <h2 class="text-lg font-semibold mb-2 text-gray-800">
-        Enter 2-Step Verification
-      </h2>
-      <p class="text-gray-500 text-sm mb-6">
-        Enter the 6-digit verification code that you can find within the
-        authentication app.
-      </p>
+<div class="bg-gray-50 flex items-center justify-center min-h-screen font-sans">
+  <div
+    class="bg-white shadow-md rounded-xl p-8 w-full max-w-md text-start border border-gray-100"
+  >
+    <h2 class="text-lg font-semibold mb-2 text-gray-800">
+      Enter 2-Step Verification
+    </h2>
+    <p class="text-gray-500 text-sm mb-6">
+      Enter the 6-digit verification code that you can find within the
+      authentication app.
+    </p>
 
-      <!-- 6 Input Boxes -->
-      <div class="flex justify-between mb-6">
-        <input
-          type="text"
-          maxlength="1"
-          class="w-12 h-12 border border-gray-300 rounded-md text-center text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-        <input
-          type="text"
-          maxlength="1"
-          class="w-12 h-12 border border-gray-300 rounded-md text-center text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-        <input
-          type="text"
-          maxlength="1"
-          class="w-12 h-12 border border-gray-300 rounded-md text-center text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-        <input
-          type="text"
-          maxlength="1"
-          class="w-12 h-12 border border-gray-300 rounded-md text-center text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-        <input
-          type="text"
-          maxlength="1"
-          class="w-12 h-12 border border-gray-300 rounded-md text-center text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-        <input
-          type="text"
-          maxlength="1"
-          class="w-12 h-12 border border-gray-300 rounded-md text-center text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-      </div>
-
-      <!-- Confirm Button -->
-      <button
-        class="w-full bg-sky-500 hover:bg-sky-600 text-white font-medium py-2 rounded-md transition"
-      >
-        Confirm 2FA Code
-      </button>
-
-      <!-- Help Text -->
-      <p class="text-gray-500 text-sm mt-4">
-        Don’t have access to your authenticator code anymore?<br />
-        <a   class="text-sky-500 text-[14px] font-semibold hover:underline">
-          Please contact the administrator.
-        </a>
-      </p>
+    <!-- 6 Input Boxes -->
+    <div class="flex justify-between mb-6">
+      <input
+        type="text"
+        maxlength="1"
+        [(ngModel)]="code[0]"
+        class="w-12 h-12 border border-gray-300 rounded-md text-center text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
+      />
+      <input
+        type="text"
+        maxlength="1"
+        [(ngModel)]="code[1]"
+        class="w-12 h-12 border border-gray-300 rounded-md text-center text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
+      />
+      <input
+        type="text"
+        maxlength="1"
+        [(ngModel)]="code[2]"
+        class="w-12 h-12 border border-gray-300 rounded-md text-center text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
+      />
+      <input
+        type="text"
+        maxlength="1"
+        [(ngModel)]="code[3]"
+        class="w-12 h-12 border border-gray-300 rounded-md text-center text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
+      />
+      <input
+        type="text"
+        maxlength="1"
+        [(ngModel)]="code[4]"
+        class="w-12 h-12 border border-gray-300 rounded-md text-center text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
+      />
+      <input
+        type="text"
+        maxlength="1"
+        [(ngModel)]="code[5]"
+        class="w-12 h-12 border border-gray-300 rounded-md text-center text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
+      />
     </div>
+
+    <!-- Confirm Button -->
+    <button
+      routerLink="/persnal-dashboard"
+      [disabled]="!isComplete"
+      class="w-full bg-sky-500 hover:bg-sky-600 text-white font-medium py-2 rounded-md transition disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      Confirm 2FA Code
+    </button>
+
+    <!-- Help Text -->
+    <p class="text-gray-500 text-sm mt-4">
+      Don’t have access to your authenticator code anymore?<br />
+      <a class="text-sky-500 text-[14px] font-semibold hover:underline">
+        Please contact the administrator.
+      </a>
+    </p>
+  </div>
 </div>

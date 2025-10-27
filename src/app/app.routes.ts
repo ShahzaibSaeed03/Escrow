@@ -11,23 +11,70 @@ import { CreateSuccessfull } from './Auth/register/persnal-account/create-succes
 import { BussnissAccountCreatedSuccessfully } from './Auth/register/persnal-account/bussniss-account-created-successfully/bussniss-account-created-successfully';
 import { PersnalFaAuthentication } from './Auth/register/persnal-account/persnal-fa-authentication/persnal-fa-authentication';
 import { ManualRegistration } from './Auth/register/persnal-account/Menual/manual-registration/manual-registration';
+import { PersnalMain } from './Perasnal-dashboard/persnal-main/persnal-main';
+import { PersnalEmptystate } from './Perasnal-dashboard/persnal-emptystate/persnal-emptystate';
+import { Profile } from './share/profile/profile';
+import { Dashboard } from './Perasnal-dashboard/dashboard/dashboard';
+import { Support } from './support/support/support';
+import { UserManual } from './support/user-manual/user-manual';
+import { UserManualDeatils } from './support/user-manual-deatils/user-manual-deatils';
+import { UpdateSection } from './support/update-section/update-section';
+import { UpdateSectionDetails } from './support/update-section-details/update-section-details';
 
 export const routes: Routes = [
 
-    { path:"", redirectTo: "login", pathMatch: "full" },
-    {path:"login",component:SignIn},
-    {path:"verify", component: Verify},
-    {path:"forget",component:Forget},
-    {path:"set-new-password", component:SetNewPassword},
-    {path:"password-updated", component:PasswordUpdated},
-    {path:"register", component:CreateAccount},
-    {path:"persnal-account",component:PersnalAccount},
-    {path:"idin-registration",component:Idin},
-    {path:"registration-complete",component:CreateSuccessfull},
-    {path:"persnal-fa-authentication",component:BussnissAccountCreatedSuccessfully},
-    {path:"2fa-authentication",component:PersnalFaAuthentication},
-    {path:"manual-registration",component:ManualRegistration},
-    {path:"**", redirectTo: "login"},
+    { path: "", redirectTo: "login", pathMatch: "full" },
+    { path: "login", component: SignIn },
+    { path: "verify", component: Verify },
+    { path: "forget", component: Forget },
+    { path: "set-new-password", component: SetNewPassword },
+    { path: "password-updated", component: PasswordUpdated },
+    { path: "register", component: CreateAccount },
+    { path: "persnal-account", component: PersnalAccount },
+    { path: "idin-registration", component: Idin },
+    { path: "registration-complete", component: CreateSuccessfull },
+    { path: "persnal-fa-authentication", component: BussnissAccountCreatedSuccessfully },
+    { path: "2fa-authentication", component: PersnalFaAuthentication },
+    { path: "manual-registration", component: ManualRegistration },
+    {path:"profile",component:Profile},
+    {
+        path: "persnal-dashboard",
+        component: PersnalMain,
+        children: [
+            // Default child redirect
+            {
+                path: "",
+                redirectTo: "emptystate",
+                pathMatch: "full"
+            },
+            {
+                path: "dashboard",
+                component:Dashboard
+            },
+            // Child component route
+            {
+                path: "emptystate",
+                component: PersnalEmptystate
+            },
+        {
+            path:"support",
+            component:Support
+        },
+        {
+            path:"user-manual",
+            component:UserManual,
+          
+        },
+         {
+            path:"user-manual-details",component:UserManualDeatils,
+        },
+        {path:"user-updates",component:UpdateSection},
+        {path:'user-update-details',component:UpdateSectionDetails}
+           
+        ]
+    }
+    ,
+    { path: "**", redirectTo: "login" },
 
 
 

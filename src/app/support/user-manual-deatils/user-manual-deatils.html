@@ -1,0 +1,102 @@
+<section class="w-full px-4 sm:px-8 md:px-[60px] lg:px-[100px] py-10">
+  <!-- Back -->
+  <button
+    type="button"
+    class="flex items-center gap-2 text-sm text-gray-500 cursor-pointer hover:text-gray-700"
+    (click)="goBack()"
+    aria-label="Back"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" class="W-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    </svg>
+    <span>Back</span>
+  </button>
+
+  <!-- Title + Subtitle -->
+  <div class="mt-4">
+    <h1 class="text-xl sm:text-2xl font-semibold text-gray-900">
+      {{ title }}
+    </h1>
+    <p class="text-sm text-gray-600 mt-1 leading-relaxed">
+      {{ subtitle }}
+    </p>
+  </div>
+
+  <!-- Info Row -->
+  <div class="flex flex-wrap items-center gap-3 sm:gap-4 border-y border-gray-200 py-3 mt-4 text-sm text-gray-600">
+    <div class="flex items-center gap-1">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M8 4.25V8H11.75M8 14.75C4.272 14.75 1.25 11.728 1.25 8S4.272 1.25 8 1.25 14.75 4.272 14.75 8 11.728 14.75 8 14.75Z"
+              stroke="#454648" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>{{ readTime }}</span>
+    </div>
+
+    <div class="flex items-center gap-1" *ngIf="includesVideo">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path
+          d="M3.561 5.734l-.249 2.732c-.037.405-.055.609-.021.802.03.173.09.34.178.492.098.171.243.317.533.607l3.88 3.882c.59.59.885.885 1.226.996.301.098.626.098.927 0 .342-.111.64-.408 1.234-1.002l2.97-2.97c.594-.594.891-.891 1.002-1.234.098-.301.098-.626 0-.927-.111-.342-.407-.639-1.001-1.233l-3.872-3.872c-.292-.292-.438-.438-.609-.537a1.47 1.47 0 00-.492-.178c-.196-.034-.402-.015-.813.023l-2.722.247c-.709.064-1.064.096-1.341.25a1.31 1.31 0 00-.582.582c-.153.276-.185.629-.248 1.331Z"
+          stroke="#454648" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M7.285 7.285a.75.75 0 10-1.061-1.061.75.75 0 001.061 1.061Z"
+          stroke="#454648" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Inclusief video</span>
+    </div>
+
+    <div class="flex items-center gap-1">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path
+          d="M7.5 3H5.4c-.84 0-1.26 0-1.58.164a1.5 1.5 0 00-.656.655C3 4.14 3 4.56 3 5.4v7.2c0 .84 0 1.26.164 1.582.144.282.373.512.655.656C4.14 15 4.56 15 5.398 15h7.204c.84 0 1.26 0 1.581-.163.283-.144.513-.374.657-.656C15 13.86 15 13.44 15 12.602V10.5M12 3.75L7.5 8.25V10.5H9.75L14.25 6M12 3.75L14.25 1.5 16.5 3.75 14.25 6M12 3.75L14.25 6"
+          stroke="#454648" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Bijgewerkt: {{ updatedAt | date:'dd-MM-yy' }}</span>
+    </div>
+  </div>
+
+  <!-- Video Placeholder -->
+  <div class="bg-gray-100 w-full aspect-video flex justify-center items-center mt-6 rounded-md">
+    <button
+      type="button"
+      class="w-14 h-14 bg-white rounded-full shadow-md flex items-center justify-center cursor-pointer hover:scale-105 transition"
+      (click)="playVideo()"
+      aria-label="Play help video"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.293-9.707a1 1 0 011.414 0L13 11l-2.879 2.879a1 1 0 11-1.414-1.414L10.172 11l-1.465-1.465a1 1 0 010-1.414z"
+              clip-rule="evenodd" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Section: Handleiding Inhoud -->
+  <div class="mt-10">
+    <h2 class="text-lg font-semibold text-gray-800 mb-4">Handleiding Inhoud</h2>
+
+    <ng-container *ngFor="let s of sections">
+      <!-- Paragraph section -->
+   <div class="mb-6" *ngIf="s.type === 'paragraph'">
+  <h3 class="font-semibold text-sm text-gray-800">
+    {{ s.heading }}
+  </h3>
+  <p class="text-sm text-gray-600 mt-1 leading-relaxed">
+    {{ $any(s).body }}
+  </p>
+</div>
+
+
+      <!-- List section -->
+<!-- List section -->
+<div class="mb-6" *ngIf="s.type === 'list'">
+  <h3 class="font-semibold text-sm text-gray-800">
+    {{ s.heading }}
+  </h3>
+  <ul class="list-disc pl-6 text-sm text-gray-600 mt-2 space-y-1">
+    <li *ngFor="let item of $any(s).items">{{ item }}</li>
+  </ul>
+</div>
+
+    </ng-container>
+  </div>
+
+</section>
