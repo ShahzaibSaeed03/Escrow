@@ -1,0 +1,211 @@
+<div class="bg-white w-full mt-5 rounded-2xl p-10">
+
+  <!-- Header -->
+  <div class="mb-6">
+    <h2 class="text-[16px] font-semibold text-gray-800">Milestone</h2>
+    <p class="text-gray-500 text-sm mt-1">Milestone details of the project</p>
+  </div>
+
+  <!-- List -->
+  <ng-container *ngFor="let m of milestones; trackBy: trackByIndex">
+    <div [class]="cardClass(m.status)">
+      <div class="flex justify-between items-start">
+        <div>
+          <p class="text-gray-800 font-medium text-[15px]">
+            <span class="font-semibold">{{ m.index }}/{{ m.total }}</span> · {{ m.title }}
+          </p>
+          <p class="text-gray-500 text-sm mt-1">
+            Expected: {{ m.expectedDate | date:'dd-MM-yyyy' }} · €{{ m.amount | number:'1.0-0' }}
+          </p>
+        </div>
+
+        <span [class]="statusPillClass(m.status)">
+          {{ statusPillText(m.status) }}
+        </span>
+      </div>
+
+      <!-- Status box; click the REVIEW box to open the modal -->
+      <div
+        [class]="boxClass(m.status)"
+        (click)="m.status === 'review' && openReview(m)"
+      >
+        <!-- Completed -->
+        <ng-container *ngIf="m.status === 'completed'">
+          <span class="font-semibold">
+            Completed on {{ m.completedOn | date:'dd-MM-yyyy' }}
+          </span>
+          <span *ngIf="m.note"> · {{ m.note }}</span>
+        </ng-container>
+
+        <!-- For Review -->
+        <ng-container *ngIf="m.status === 'review'">
+          <div class="flex items-center gap-2 mb-1">
+            <div class="w-5 h-5 flex items-center justify-center bg-amber-100 rounded-full text-amber-600">📅</div>
+            <p class="font-medium text-amber-800 text-sm">
+              Submitted for review: {{ m.submittedOn | date:'dd-MM-yyyy' }}
+            </p>
+          </div>
+          <p class="text-gray-700 text-sm pl-7" *ngIf="m.summary">{{ m.summary }}</p>
+        </ng-container>
+
+        <!-- Waiting -->
+        <ng-container *ngIf="m.status === 'waiting'">
+          Awaiting completion by contractor
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<!-- ========================================================= -->
+<!-- REVIEW MODAL (scrollable, centered) -->
+<!-- ========================================================= -->
+<div
+  *ngIf="showReviewModal && activeMilestone as am"
+  class="fixed inset-0 z-[60] flex items-center justify-center"
+>
+  <!-- backdrop -->
+  <div class="absolute inset-0 bg-black/40" (click)="closeReview()"></div>
+
+  <!-- dialog -->
+  <div
+    class="relative bg-white rounded-xl shadow-xl w-full max-w-5xl mx-4
+           max-h-[85vh] overflow-y-auto"
+    role="dialog"
+    aria-modal="true"
+  >
+    <!-- Header -->
+    <div class="p-6 border-b border-gray-200 sticky top-0 bg-white">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-[24px] font-semibold text-gray-800">
+            {{ am.title }}
+          </h2>
+          <div class="flex items-center gap-3 mt-1 text-sm text-gray-500">
+            <span class="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-md font-medium">For Review</span>
+            <span>• Expected: {{ am.expectedDate | date:'dd-MM-yyyy' }}</span>
+            <span>• €{{ am.amount | number:'1.0-0' }}</span>
+          </div>
+        </div>
+        <button class="text-gray-400 hover:text-gray-600 text-2xl leading-none" (click)="closeReview()">
+          &times;
+        </button>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="p-6 space-y-6 text-gray-700">
+      <!-- Description -->
+      <div>
+        <h3 class="font-semibold text-[16px] text-gray-900 mb-1">Description</h3>
+        <p class="text-sm leading-relaxed">
+          {{ am.summary || 'No description provided.' }}
+        </p>
+      </div>
+
+      <!-- Requirements -->
+      <div *ngIf="am.requirements?.length">
+        <h3 class="font-semibold text-gray-900 mb-2">Requirements</h3>
+        <ul class="space-y-1 text-sm">
+          <li class="flex items-start gap-2" *ngFor="let r of am.requirements">
+            <span class="text-sky-500 text-lg">•</span>{{ r }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- Deliverables -->
+      <div *ngIf="am.deliverables?.length">
+        <h3 class="font-semibold text-gray-900 mb-2">Deliverables</h3>
+        <ul class="space-y-1 text-sm">
+          <li class="flex items-start gap-2" *ngFor="let d of am.deliverables">
+            <span class="text-emerald-500 text-lg">✓</span>{{ d }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- Progress Images -->
+      <div *ngIf="am.images?.length">
+        <h3 class="font-semibold text-gray-900 mb-2">Progress Image</h3>
+        <div class="flex flex-wrap gap-3">
+          <img *ngFor="let img of am.images"
+               [src]="img"
+               alt="Progress"
+               class="rounded-md object-cover max-h-44">
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="p-6">
+      <div class="p-6 bg-gray-50 rounded">
+        <h3 class="font-semibold text-gray-900 mb-2">Review Actions</h3>
+        <p class="text-sm text-gray-600 mb-4">
+          This milestone has been submitted for review. Please check
+          deliverables and images before making a decision.
+        </p>
+        <div class="flex items-center gap-3">
+          <button
+            class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 text-sm font-medium"
+            (click)="closeReview()"
+          >
+            Disapprove
+          </button>
+          <button
+            class="px-4 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 text-sm font-medium"
+            (click)="openApproveConfirm()"
+          >
+            Approve
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- APPROVE CONFIRM POPUP (stacked over review modal) -->
+<!-- ========================================================= -->
+<div
+  *ngIf="showApproveModal && activeMilestone as am2"
+  class="fixed inset-0 z-[70] flex items-center justify-center"
+>
+  <!-- faint backdrop so review is still visible behind -->
+  <div class="absolute inset-0 bg-black/30" (click)="cancelApprove()"></div>
+
+  <div class="relative bg-white border border-gray-100 shadow-md rounded-xl p-8 w-full max-w-md text-center mx-4">
+    <!-- Icon -->
+    <div class="bg-sky-100 rounded-full w-14 h-14 flex items-center justify-center mx-auto mb-4">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 15.9999L13.6569 21.6568L24.9694 10.343" stroke="#109FDA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- Heading -->
+    <h2 class="text-lg font-semibold text-gray-800 mb-2">Approve Milestone?</h2>
+    <p class="text-gray-500 text-sm mb-6">
+      Are you sure you want to approve this milestone? Once approved, the payment will be released.
+    </p>
+
+    <div class="flex justify-between py-2 px-3 my-5 border rounded-lg bg-gray-50">
+      <h2>Released payment:</h2>
+      <h2>€{{ am2.amount | number:'1.0-0' }}</h2>
+    </div>
+
+    <div class="flex gap-2">
+      <button
+        type="button"
+        class="w-full border bg-white text-black hover:bg-gray-100 font-medium py-2 rounded-md transition"
+        (click)="cancelApprove()"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="w-full bg-sky-500 hover:bg-sky-600 text-white font-medium py-2 rounded-md transition"
+        (click)="proceedApprove()"
+      >
+        Proceed
+      </button>
+    </div>
+  </div>
+</div>

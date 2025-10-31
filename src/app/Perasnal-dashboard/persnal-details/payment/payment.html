@@ -1,0 +1,85 @@
+<div class="bg-white rounded-xl shadow-md w-full p-12">
+  <!-- Header -->
+  <div class="mb-5">
+    <h2 class="text-[18px] font-semibold text-gray-900">Payments</h2>
+    <p class="text-sm text-gray-500">Overview of all escrow transactions</p>
+  </div>
+
+  <!-- Payment Cards -->
+  <ng-container *ngFor="let p of payments; trackBy: trackById">
+    <!-- ESCROW CARD -->
+    <div *ngIf="p.type === 'escrow'" class="border border-gray-200 rounded-lg p-5 mb-4">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18" />
+          </svg>
+          <span class="text-[15px] font-medium text-gray-800">{{ p.txNumber }}</span>
+        </div>
+        <p class="text-sm text-gray-500 mt-1 md:mt-0">{{ formatDate(p.date) }}</p>
+      </div>
+
+      <hr class="border-gray-200 mb-4" />
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div>
+          <p class="text-gray-500 text-sm">{{ p.deposit?.title }}</p>
+          <p class="text-[16px] font-semibold text-gray-900 mt-1">
+            {{ formatCurrency(p.deposit?.amount || 0) }}
+          </p>
+          <p class="text-sm text-gray-500 mt-0.5">
+            {{ p.deposit?.method }} · {{ p.deposit?.reference }}
+          </p>
+        </div>
+
+        <div>
+          <p class="text-gray-500 text-sm">{{ p.released?.title }}</p>
+          <p class="text-[16px] font-semibold text-green-600 mt-1">
+            {{ formatCurrency(p.released?.amount || 0) }}
+          </p>
+          <p class="text-sm text-gray-500 mt-0.5">{{ p.released?.milestone }}</p>
+        </div>
+
+        <div>
+          <p class="text-gray-500 text-sm">{{ p.blocked?.title }}</p>
+          <p class="text-[16px] font-semibold text-gray-800 mt-1">
+            {{ formatCurrency(p.blocked?.amount || 0) }}
+          </p>
+          <p class="text-sm text-gray-500 mt-0.5">{{ p.blocked?.note }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PENDING CARD -->
+    <div *ngIf="p.type === 'pending'" class="border border-gray-200 rounded-lg p-5 mb-4">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span class="text-[15px] font-medium text-gray-800">{{ p.pending?.tag }}</span>
+        </div>
+        <span class="text-[11px] bg-yellow-100 text-yellow-700 font-medium px-2.5 py-1 rounded-full">
+          {{ p.txNumber }}
+        </span>
+      </div>
+
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-3">
+        <div>
+          <p class="text-[15px] font-medium text-gray-800">
+            {{ p.pending?.title }}
+          </p>
+          <p class="text-sm text-gray-500 mt-0.5">
+            {{ p.pending?.status }}
+          </p>
+        </div>
+        <div class="text-right mt-3 sm:mt-0">
+          <p class="text-sm text-gray-500">Amount</p>
+          <p class="text-[16px] font-semibold text-gray-900">
+            {{ formatCurrency(p.pending?.amount || 0) }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

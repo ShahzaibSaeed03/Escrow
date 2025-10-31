@@ -20,6 +20,13 @@ import { UserManual } from './support/user-manual/user-manual';
 import { UserManualDeatils } from './support/user-manual-deatils/user-manual-deatils';
 import { UpdateSection } from './support/update-section/update-section';
 import { UpdateSectionDetails } from './support/update-section-details/update-section-details';
+import { CreateProject } from './Perasnal-dashboard/create-project/create-project/create-project';
+import { PernalDetailsMain } from './Perasnal-dashboard/persnal-details/pernal-details-main/pernal-details-main';
+import { Overview } from './Perasnal-dashboard/persnal-details/overview/overview';
+import { Milestone } from './Perasnal-dashboard/persnal-details/milestone/milestone';
+import { File } from './Perasnal-dashboard/persnal-details/file/file';
+import { Payment } from './Perasnal-dashboard/persnal-details/payment/payment';
+import { Log } from './Perasnal-dashboard/persnal-details/log/log';
 
 export const routes: Routes = [
 
@@ -36,7 +43,7 @@ export const routes: Routes = [
     { path: "persnal-fa-authentication", component: BussnissAccountCreatedSuccessfully },
     { path: "2fa-authentication", component: PersnalFaAuthentication },
     { path: "manual-registration", component: ManualRegistration },
-    {path:"profile",component:Profile},
+    { path: "profile", component: Profile },
     {
         path: "persnal-dashboard",
         component: PersnalMain,
@@ -49,28 +56,43 @@ export const routes: Routes = [
             },
             {
                 path: "dashboard",
-                component:Dashboard
+                component: Dashboard
             },
             // Child component route
             {
                 path: "emptystate",
                 component: PersnalEmptystate
             },
-        {
-            path:"support",
-            component:Support
-        },
-        {
-            path:"user-manual",
-            component:UserManual,
-          
-        },
-         {
-            path:"user-manual-details",component:UserManualDeatils,
-        },
-        {path:"user-updates",component:UpdateSection},
-        {path:'user-update-details',component:UpdateSectionDetails}
-           
+            {
+                path: "create-project", component: CreateProject
+            },
+            {
+                path: "support",
+                component: Support
+            },
+            {
+                path: "user-manual",
+                component: UserManual,
+
+            },
+            {
+                path: "user-manual-details", component: UserManualDeatils,
+            },
+            { path: "user-updates", component: UpdateSection },
+            { path: 'user-update-details', component: UpdateSectionDetails },
+            {path:"persnal-details",component:PernalDetailsMain,
+                children:[
+                    {path:"",redirectTo:"overview",pathMatch:"full"},
+                    {path:"overview",component:Overview},
+                    {path:"milestone",component:Milestone},
+                    {path:"file",component:File},
+                    {path:"payments",component:Payment},
+                    {path:"log",component:Log},
+                    
+
+                ]
+            }
+
         ]
     }
     ,

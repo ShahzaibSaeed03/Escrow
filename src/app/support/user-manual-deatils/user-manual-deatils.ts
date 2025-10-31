@@ -13,18 +13,14 @@ type ManualSection =
   styleUrls: ['./user-manual-deatils.css']
 })
 export class UserManualDeatils {
-  // Top meta (show in the info row)
   readTime = '10 min';
   includesVideo = true;
-  // Use a Date so you can localize/format easily with DatePipe
   updatedAt: Date = new Date('2024-11-15T00:00:00');
 
-  // Title + subtitle
   title = 'Aan de slag';
   subtitle =
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris placerat lorem purus, et posuere est suscipit eu';
 
-  // Sections (exact text from your HTML)
   sections: ManualSection[] = [
     {
       type: 'paragraph',

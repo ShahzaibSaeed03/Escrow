@@ -114,7 +114,7 @@
         <h2 class="text-lg font-semibold text-gray-800">My Projects</h2>
         <p class="text-sm text-gray-500">Overview of all your renovation projects</p>
       </div>
-      <button class="flex items-center justify-center gap-2 bg-sky-500 hover:bg-sky-600 text-white text-sm font-medium px-4 py-2.5 rounded-lg transition w-full sm:w-auto">
+      <button class="flex items-center justify-center gap-2 bg-sky-500 hover:bg-sky-600 text-white text-sm font-medium px-4 py-2.5 rounded-lg transition w-full sm:w-auto" routerLink="/persnal-dashboard/create-project">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
         </svg>
@@ -136,7 +136,7 @@
         </thead>
 
         <tbody class="divide-y divide-gray-100">
-          <tr *ngFor="let p of projects">
+          <tr *ngFor="let p of projects" routerLink="/persnal-dashboard/persnal-details" class="cursor-pointer">
             <!-- Project -->
             <td class="px-6 py-4 font-medium text-gray-800 whitespace-nowrap">
               {{ p.name }}

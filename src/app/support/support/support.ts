@@ -29,20 +29,20 @@ export class Support {
     {
       title: 'User manual',
       description: 'Discover how to get started and make the most of the application with our step-by-step user guide.',
-      img: '../assets/icon_manual.png',
+      img: 'assets/icon_manual.png',
       linkText: 'View More',
       href: '/persnal-dashboard/user-manual'
     },
     {
       title: 'Updates',
       description: 'Stay up to date with the latest features, improvements, and bug fixes — all in one place.',
-      img: '../assets/Icon_updates.png',
+      img: 'assets/Icon_updates.png',
       linkText: 'View More',
       href: '/persnal-dashboard/user-updates'
     },
     {
       title: 'Contact Us',
-      img: '../assets/icon_communication.png',
+      img: 'assets/icon_communication.png',
       linkText: 'support@escrow.com',
       href: 'mailto:support@escrow.com'
     }

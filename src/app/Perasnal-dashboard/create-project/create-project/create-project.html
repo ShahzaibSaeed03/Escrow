@@ -1,0 +1,711 @@
+<section class="px-3">
+  <div class="w-full bg-gradient-to-b from-[#0E8ABE] to-[#87D6F7] rounded-b-lg py-10 pb-[100px] px-12">
+    <h2 class="text-[24px] font-semibold text-white">Create New Project</h2>
+  </div>
+
+  <div class="px-2 sm:px-10 mt-[-120px]">
+    <div class="mx-auto bg-white shadow-lg rounded-xl mt-10 border border-gray-200 flex flex-col lg:flex-row overflow-hidden">
+
+      <!-- Sidebar -->
+   <!-- Sidebar -->
+<!-- Sidebar -->
+<div class="border-r border-gray-200 w-full lg:w-1/4 p-6 space-y-6">
+  <ng-container *ngFor="let s of steps; let i = index; let last = last">
+    <!-- keep per-item spacing via the parent space-y-6 -->
+    <div class="relative">
+      <button
+        type="button"
+        class="group w-full flex gap-3 items-start relative cursor-pointer text-left"
+        (click)="onStepClickN(s)"
+      >
+        <!-- Dot + connectors -->
+        <span class="relative shrink-0">
+          <!-- top connector (to previous) -->
+          <span
+            *ngIf="i !== 0"
+            class="absolute left-1/2 -translate-x-1/2 top-[-12px] w-px h-3"
+            [ngClass]="topLineClass(s)"
+          ></span>
+
+          <!-- circle -->
+          <span
+            class="w-10 h-10 rounded-full flex items-center justify-center border transition-all"
+            [ngClass]="dotClass(s)"
+          >
+            <ng-container *ngIf="isCompletedN(s); else notCompletedIcon">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none">
+                <path d="M6 12l4 4 8-8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </ng-container>
+            <ng-template #notCompletedIcon>
+              <span class="text-sm font-semibold"
+                    [ngClass]="isActiveN(s) ? 'text-sky-600' : (isCompletedN(s) ? 'text-white' : 'text-gray-600')">
+                {{ s }}
+              </span>
+            </ng-template>
+          </span>
+
+          <!-- bottom connector (to next) -->
+          <span
+            *ngIf="!last"
+            class="absolute left-1/2 -translate-x-1/2 top-10 w-px h-8" 
+            [ngClass]="bottomLineClass(s)"
+          ></span>
+        </span>
+
+        <!-- Labels -->
+        <span class="mt-1">
+          <p class="font-semibold text-sm"
+             [ngClass]="isActiveN(s) ? 'text-gray-900' : (isCompletedN(s) ? 'text-gray-800' : 'text-gray-500')">
+            Step {{ s }}
+          </p>
+          <p class="text-xs"
+             [ngClass]="isActiveN(s) ? 'text-sky-600' : 'text-gray-500'">
+            {{ s === 1 ? 'Project details'
+               : s === 2 ? 'Payment structure'
+               : s === 3 ? 'Link contractor'
+               : 'Overview & confirmation' }}
+          </p>
+        </span>
+      </button>
+    </div>
+  </ng-container>
+</div>
+
+
+
+      <!-- Main Content -->
+      <div class="flex-1 p-6 lg:p-10">
+        <h2 class="text-xl font-semibold text-gray-900 mb-1">
+          {{ isActiveN(1) ? 'Project Details'
+             : isActiveN(2) ? 'Payment Structure'
+             : isActiveN(3) ? 'Link Contractor'
+             : 'Overview & Confirmation' }}
+        </h2>
+
+        <p class="text-sm text-gray-500 mb-6">
+          {{ isActiveN(1) ? 'Tell us about your renovation project'
+             : isActiveN(2) ? 'Set your payment details'
+             : isActiveN(3) ? 'Connect your contractor'
+             : 'Review and confirm details' }}
+        </p>
+
+        <!-- STEP 1 -->
+        <ng-container *ngIf="isActiveN(1)">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <!-- payer -->
+            <label (click)="setRole('payer')"
+                   class="flex flex-col border rounded-lg p-4 cursor-pointer hover:border-sky-300 transition"
+                   [class.ring-1]="role()==='payer'" [class.ring-sky-400]="role()==='payer'">
+              <div class="flex justify-between items-start mb-1">
+                <span class="text-sm font-medium text-gray-800">I’m paying</span>
+                <svg *ngIf="role()==='payer'" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+              <span class="text-xs text-gray-500">You’ll send the payment</span>
+            </label>
+
+            <!-- receiver -->
+            <label (click)="setRole('receiver')"
+                   class="flex flex-col border rounded-lg p-4 cursor-pointer hover:border-sky-300 transition"
+                   [class.ring-1]="role()==='receiver'" [class.ring-sky-400]="role()==='receiver'">
+              <div class="flex justify-between items-start mb-1">
+                <span class="text-sm font-medium text-gray-800">I’m receiving the payment</span>
+                <svg *ngIf="role()==='receiver'" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+              <span class="text-xs text-gray-500">You’ll receive funds once approved</span>
+            </label>
+          </div>
+
+          <!-- form -->
+          <form [formGroup]="projectForm" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-1">Project title</label>
+              <input type="text" formControlName="title"
+                     class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-sky-400 border-gray-300"
+                     placeholder="Type project title..." />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-1">Address</label>
+              <input type="text" formControlName="address"
+                     class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-sky-400 border-gray-300"
+                     placeholder="Type address..." />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-1">Description</label>
+              <textarea formControlName="description"
+                        class="w-full border rounded-lg px-3 py-2 text-sm h-28 resize-none focus:ring-1 focus:ring-sky-400 border-gray-300"
+                        placeholder="Describe project..."></textarea>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium mb-1">Start date</label>
+                <input type="date" formControlName="startDate"
+                       class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-sky-400 border-gray-300" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-1">End date</label>
+                <input type="date" formControlName="endDate"
+                       class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-sky-400 border-gray-300" />
+              </div>
+            </div>
+
+            <!-- Attachments with LIVE image previews -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Attachments</label>
+
+              <input
+                #fileInput
+                type="file"
+                class="hidden"
+                multiple
+                accept=".pdf,.png,.jpg,.jpeg"
+                (change)="onFileChange($event)"
+              />
+
+              <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 sm:p-8 text-center bg-white"
+                   (click)="triggerFile()">
+                <!-- Image Preview (only for images) -->
+            <div
+  class="flex justify-center gap-3 sm:gap-4 mb-4 flex-wrap"
+  *ngIf="projectForm.value.attachments?.length"
+>
+  <ng-container *ngFor="let f of projectForm.value.attachments; let i = index">
+    <div
+      *ngIf="isImage(f)"
+      class="relative w-20 h-20 sm:w-24 sm:h-24"
+    >
+      <img
+        [src]="getPreview(f)"
+        alt="preview"
+        class="w-full h-full object-cover rounded-md shadow-sm border"
+      />
+
+      <!-- remove (X) -->
+      <button
+        type="button"
+        (click)="removeFile(i); $event.stopPropagation()"
+        class="absolute -top-2 -right-2 rounded-full border bg-white/90 hover:bg-white shadow p-1"
+        aria-label="Remove image"
+        title="Remove"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 011.414 
+            1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 
+            10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+        </svg>
+      </button>
+    </div>
+  </ng-container>
+</div>
+  
+
+                <!-- Upload text -->
+                <p class="text-gray-500 text-sm">
+                  Drag files here or click to
+                  <span class="text-sky-500 font-medium hover:underline">upload</span>
+                </p>
+                <p class="text-xs text-gray-400 mt-1">
+                  Supported formats: PDF, JPG, PNG (max. 10MB per file)
+                </p>
+              </div>
+
+        
+            </div>
+          </form>
+        </ng-container>
+
+        <!-- STEP 2 -->
+<!-- STEP 2 -->
+<ng-container *ngIf="isActiveN(2)">
+  <div class="p-6">
+    <h2 class="text-xl font-semibold text-gray-900 mb-1">Payment Structure</h2>
+    <p class="text-sm text-gray-500 mb-6">Choose how you want to pay for this project</p>
+
+    <!-- Tabs -->
+    <div class="grid grid-cols-1 sm:grid-cols-1 gap-4 mb-6">
+      <div class="inline-flex rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+        <button
+          type="button"
+          (click)="setPaymentTab('milestone')"
+          class="px-4 w-full py-2 text-sm md:text-base font-medium transition-all focus:outline-none"
+          [ngClass]="isMilestoneTab()
+            ? 'bg-white focus:ring-2 focus:ring-green-500'
+            : 'text-gray-700 bg-gray-200 hover:bg-gray-100 focus:ring-2 focus:ring-gray-300'">
+          Milestone (Recommended)
+        </button>
+        <button
+          type="button"
+          (click)="setPaymentTab('single')"
+          class="px-4 w-full py-2 text-sm md:text-base font-medium transition-all focus:outline-none"
+          [ngClass]="isSingleTab()
+            ? 'bg-white focus:ring-2 focus:ring-green-500'
+            : 'text-gray-700 bg-gray-200 hover:bg-gray-100 focus:ring-2 focus:ring-gray-300'">
+          Single Payment
+        </button>
+      </div>
+    </div>
+
+    <!-- Milestone notice -->
+    <div *ngIf="isMilestoneTab()"
+         class="w-full mb-5 bg-green-50 border border-green-200 rounded-xl p-4 sm:p-5 md:p-6 flex items-start gap-3 shadow-sm">
+      <div class="flex-shrink-0 mt-1">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="#16a34a" class="w-5 h-5 md:w-6 md:h-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+        </svg>
+      </div>
+      <p class="text-gray-700 text-sm md:text-base">
+        <span class="font-semibold text-gray-900">Recommended:</span>
+        Split the payment into milestones for more security. You only pay for work that has actually been delivered.
+      </p>
+    </div>
+
+    <!-- Single notice -->
+    <div *ngIf="isSingleTab()"
+         class="w-full mb-5 bg-yellow-50 border border-yellow-200 rounded-xl p-4 sm:p-5 md:p-6 flex items-start gap-3 shadow-sm">
+      <div class="flex-shrink-0 mt-1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M9.02772 5.66647V10.1109M9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9C16.5 13.1421 13.1421 16.5 9 16.5ZM9.05539 12.3331V12.3887L9.00005 12.3888V12.3331H9.05539Z"
+                stroke="#B28F35" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <p class="text-gray-700 text-sm md:text-base">
+        <span class="font-semibold text-gray-900">Notice:</span>
+        We recommend against paying the full amount upfront. Pay a maximum of 10% upfront and use escrow for the rest for more security.
+      </p>
+    </div>
+
+    <!-- ========== MILESTONE TAB CONTENT ========== -->
+    <div *ngIf="isMilestoneTab()" class="w-full bg-gray-50 rounded-lg border border-gray-200 p-6 shadow-sm" [formGroup]="payment">
+      <div formArrayName="milestones">
+        <div class="space-y-5 mb-6"
+               *ngFor="let m of milestones.controls; let i = index"
+               [formGroupName]="i">
+
+          <div class="flex justify-between items-center mb-1">
+            <h2 class="text-lg font-semibold text-gray-800">Milestone {{ i + 1 }}</h2>
+            <button type="button" class="text-red-500 hover:text-red-600 transition"
+                    (click)="removeMilestone(i)" [disabled]="milestones.length === 1" title="Remove milestone">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3m-7 0h8"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Title -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Milestone title</label>
+            <input type="text" formControlName="title"
+                   placeholder="Type milestone ex, Demolition & preparation..."
+                   class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 outline-none" />
+          </div>
+
+          <!-- Description -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <textarea rows="3" formControlName="description"
+                      placeholder="Type milestone description..."
+                      class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 outline-none"></textarea>
+          </div>
+
+          <!-- Amount & Date -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Amount (€)</label>
+              <div class="flex items-center border border-gray-300 rounded-md">
+                <span class="px-3 text-gray-500">€</span>
+                <input type="number" formControlName="amount" placeholder="0.0..." class="w-full py-2 px-2 focus:outline-none" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Expected Date</label>
+              <input type="date" formControlName="expectedDate" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 outline-none" />
+            </div>
+          </div>
+
+          <!-- Requirements -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Requirements</label>
+            <div formArrayName="requirements" class="space-y-2">
+              <div class="flex items-center border border-gray-300 rounded-md"
+                   *ngFor="let r of reqArray(i).controls; let ri = index">
+                <span class="px-3 text-blue-500">•</span>
+                <input type="text" class="w-full py-2 px-2 focus:outline-none" [formControlName]="ri" placeholder="Type requirements..." />
+                <button type="button" class="px-3 text-red-500 hover:text-red-600 transition"
+                        (click)="removeRequirement(i, ri)" [disabled]="reqArray(i).length === 1" title="Remove requirement">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <button type="button" (click)="addRequirement(i)"
+                    class="mt-2 flex items-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+              </svg>
+              Add More
+            </button>
+          </div>
+
+          <!-- Deliverables -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Deliverables</label>
+            <div formArrayName="deliverables" class="space-y-2">
+              <div class="flex items-center border border-gray-300 rounded-md"
+                   *ngFor="let d of delArray(i).controls; let di = index">
+                <span class="px-3 text-green-500">✓</span>
+                <input type="text" class="w-full py-2 px-2 focus:outline-none" [formControlName]="di" placeholder="Type deliverables..." />
+                <button type="button" class="px-3 text-red-500 hover:text-red-600 transition"
+                        (click)="removeDeliverable(i, di)" [disabled]="delArray(i).length === 1" title="Remove deliverable">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <button type="button" (click)="addDeliverable(i)"
+                    class="mt-2 flex items-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+              </svg>
+              Add More
+            </button>
+          </div>
+
+          <hr class="my-4">
+        </div>
+      </div>
+
+      <!-- Add milestone -->
+      <div class="my-5">
+        <button type="button"
+                (click)="addMilestone()"
+                class="px-5 py-2 w-full text-sm border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+          + Add More Milestone
+        </button>
+      </div>
+    </div>
+
+    <!-- ========== SINGLE TAB CONTENT ========== -->
+    <div *ngIf="isSingleTab()" class="p-6" [formGroup]="payment">
+      <div formGroupName="single">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Amount (€)</label>
+        <div class="flex items-center border border-gray-300 rounded-md">
+          <span class="px-3 text-gray-500">€</span>
+          <input type="number" formControlName="amount" placeholder="0.0..." class="w-full py-2 px-2 focus:outline-none" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer (total + actions) -->
+    <div class="py-2 px-8 bg-gray-100 flex w-full justify-between">
+      <h2 class="font-semibold">Total Project Amount</h2>
+      <h2>
+        €{{ isMilestoneTab() ? (totalMilestonesAmount() | number:'1.2-2') : (singleAmount() | number:'1.2-2') }}
+      </h2>
+    </div>
+
+    
+  </div>
+</ng-container>
+      
+
+   <!-- STEP 3 -->
+<ng-container *ngIf="isActiveN(3)">
+  <div class="flex-1 py-5">
+    <div class="p-6">
+      <h2 class="text-xl font-semibold text-gray-900 mb-1">Link Contractor</h2>
+      <p class="text-sm text-gray-500 mb-6">Choose how you want to link a contractor to this project</p>
+    </div>
+
+    <div class="p-6" [formGroup]="link">
+      <!-- Specific Contractor Card -->
+      <div class="w-full bg-blue-50 border border-blue-200 rounded-lg p-6 relative">
+        <!-- Checkmark (click to choose this mode) -->
+        <div class="absolute top-4 right-4 cursor-pointer"
+             (click)="link.patchValue({mode: 'specific'})" title="Use Specific Contractor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6"
+               [ngClass]="link.get('mode')?.value === 'specific' ? 'text-blue-500' : 'text-blue-200'"
+               fill="currentColor" viewBox="0 0 24 24">
+            <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <h2 class="text-lg font-semibold text-gray-800 mb-4">Specific Contractor</h2>
+
+        <div class="space-y-2 mx-auto max-w-2xl">
+          <label class="block text-sm font-medium text-gray-700">Select contractor</label>
+
+          <div class="flex items-center border border-gray-300 rounded-md bg-white relative overflow-hidden">
+            <!-- Filter Type -->
+            <select
+              class="px-3 py-2 text-gray-700 border-r border-gray-300 focus:outline-none bg-white text-sm"
+              [value]="filterType"
+              (change)="setFilterType(($any($event.target).value))">
+              <option value="email">Email</option>
+              <option value="id">Unique ID</option>
+            </select>
+
+            <!-- Input + suggestions -->
+            <div class="relative w-full">
+              <input
+                type="text"
+                [placeholder]="filterType==='email' ? 'Type contractor name or email...' : 'Type contractor name or ID...'"
+                class="w-full px-3 py-2 rounded-r-md focus:outline-none text-sm"
+                autocomplete="off"
+                [value]="link.get('query')?.value"
+                (focus)="link.patchValue({mode: 'specific'})"
+                (input)="onQueryInput(($any($event.target).value))"
+              />
+
+              <!-- Selected contractor chip (shows after pick) -->
+              <div *ngIf="link.get('selected')?.value as sel"
+                   class="absolute -bottom-8 left-0 mt-1 flex items-center gap-2 text-sm">
+                <span class="px-2 py-0.5 rounded bg-white border shadow-sm">
+                  <strong>{{ sel.name }}</strong>
+                  <span class="mx-1">•</span>
+                  <span *ngIf="filterType==='email'">{{ sel.email }}</span>
+                  <span *ngIf="filterType==='id'">ID: {{ sel.id }}</span>
+                </span>
+                <span [class]="badgeClass(sel.verified)">
+                  {{ sel.verified ? 'Verified' : 'Unverified' }}
+                </span>
+              </div>
+
+              <!-- Live suggestions -->
+              <ul *ngIf="filteredContractors.length"
+                  class="absolute z-10 left-0 right-0 mt-1 bg-white border border-gray-200 rounded-md shadow-md max-h-48 overflow-y-auto text-sm">
+                <li *ngFor="let c of filteredContractors"
+                    class="px-3 py-2 hover:bg-gray-100 cursor-pointer flex items-center justify-between"
+                    (click)="selectContractor(c)">
+                  <div class="truncate">
+                    <div class="font-medium text-gray-900 truncate">{{ c.name }}</div>
+                    <div class="text-gray-600 truncate" *ngIf="filterType==='email'">{{ c.email }}</div>
+                    <div class="text-gray-600 truncate" *ngIf="filterType==='id'">ID: {{ c.id }}</div>
+                  </div>
+                  <span [class]="badgeClass(c.verified)">
+                    {{ c.verified ? 'Verified' : 'Unverified' }}
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <p class="text-sm text-gray-500">
+            You can select a contractor using their {{ filterType==='email' ? 'email' : 'unique ID' }}.
+          </p>
+        </div>
+      </div>
+
+      <!-- Send Invitation Card -->
+      <div class="w-full mt-5 bg-gray-50 border border-gray-200 rounded-lg p-6 relative">
+        <!-- Radio circle (click to choose invitation mode) -->
+        <div class="absolute top-4 right-4 text-gray-400 border border-gray-400 rounded-full w-5 h-5 flex items-center justify-center cursor-pointer"
+             (click)="link.patchValue({mode:'invite'})" title="Use Invitation">
+          <div class="w-2.5 h-2.5 rounded-full"
+               [ngClass]="link.get('mode')?.value === 'invite' ? 'bg-gray-400' : 'bg-white'"></div>
+        </div>
+
+        <h2 class="text-lg font-semibold text-gray-800 mb-4">Send Invitation</h2>
+
+        <div class="bg-yellow-50 border border-yellow-300 text-gray-700 rounded-md p-3 text-sm flex items-start mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 mt-0.5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 110 20 10 10 0 010-20z"/>
+          </svg>
+          <p>
+            <strong>Private invitation:</strong> You'll get a unique link that you can share with contractors.
+            Only contractors with this link can respond to your project.
+          </p>
+        </div>
+
+        <div class="space-y-2 max-w-2xl">
+          <label class="block text-sm font-medium text-gray-700">Contractor Email</label>
+          <input
+            type="email"
+            formControlName="inviteEmail"
+            placeholder="contractor@example.com"
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400 outline-none"
+            (focus)="link.patchValue({mode: 'invite'})"
+          />
+          <div class="text-xs text-red-600" *ngIf="link.get('inviteEmail')?.touched && link.get('inviteEmail')?.invalid">
+            Please enter a valid email.
+          </div>
+        </div>
+
+        <div class="mt-4 text-sm text-gray-600">
+          <p class="font-medium">How does invitation work?</p>
+          <ol class="list-decimal list-inside mt-1 space-y-1">
+            <li>After creating this project, you'll receive a unique invitation link that you can share.</li>
+            <li>They can then submit a quote for your project.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+  
+  </div>
+</ng-container>
+
+
+        <!-- STEP 4 -->
+     <!-- STEP 4: OVERVIEW -->
+<ng-container *ngIf="isActiveN(4)">
+  <div class="p-6">
+    <h2 class="text-xl font-semibold text-gray-900 mb-1">Overview & Confirmation</h2>
+    <p class="text-sm text-gray-500 mb-6">Review all details before submitting</p>
+  </div>
+
+  <div class="p-6">
+    <!-- Top Section -->
+    <div class="grid md:grid-cols-2 gap-4">
+      <!-- Project Details -->
+      <div class="border border-gray-200 rounded-md p-4">
+        <h2 class="text-sm font-semibold text-black mb-2">Project Details</h2>
+        <hr class="border-border-gray-200 mb-3">
+        <div class="space-y-2 text-sm text-black">
+          <div class="flex justify-between">
+            <span class="text-black">Title:</span>
+            <span class="font-medium text-black">{{ projectForm.value.title || '—' }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Address:</span>
+            <span class="font-medium text-right text-black">{{ projectForm.value.address || '—' }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Start:</span>
+            <span class="font-medium text-black">
+              {{ projectForm.value.startDate ? (projectForm.value.startDate | date:'dd-MM-yyyy') : '—' }}
+            </span>
+          </div>
+          <div class="flex justify-between">
+            <span>Completion:</span>
+            <span class="font-medium text-black">
+              {{ projectForm.value.endDate ? (projectForm.value.endDate | date:'dd-MM-yyyy') : '—' }}
+            </span>
+          </div>
+          <div class="flex justify-between">
+            <span>Role:</span>
+            <span class="font-medium text-black">{{ roleText() }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Structure -->
+      <div class="border border-gray-200 rounded-md p-4">
+        <h2 class="text-sm font-semibold text-black mb-2">Payment Structure</h2>
+        <hr class="border-gray-200 mb-3">
+
+        <!-- Milestones -->
+        <div *ngIf="paymentType() === 'milestone'; else singlePay" class="space-y-2 text-sm text-black">
+          <div class="flex justify-between" *ngFor="let m of milestones.controls; let i = index">
+            <span>{{ i + 1 }}. {{ m.value.title || ('Milestone ' + (i + 1)) }}</span>
+            <span class="font-medium text-black">
+              €{{ (m.value?.amount || 0) | number:'1.0-2' }}
+            </span>
+          </div>
+          <hr class="border-[#333]">
+          <div class="flex justify-between font-semibold text-black">
+            <span>Total</span>
+            <span>€{{ totalMilestonesAmount() | number:'1.0-2' }}</span>
+          </div>
+        </div>
+
+        <!-- Single -->
+        <ng-template #singlePay>
+          <div class="space-y-2 text-sm text-black">
+            <div class="flex justify-between">
+              <span>Single Payment</span>
+              <span class="font-medium text-black">
+                €{{ singleAmount() | number:'1.0-2' }}
+              </span>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- Important Terms -->
+    <div class="mt-5">
+      <div class="bg-[#FFF9E8] border border-[#FDE68A] text-[#1A1A1A] rounded-md p-4 text-sm md:text-base leading-relaxed shadow-sm">
+        <div class="flex items-start gap-2 mb-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 flex-shrink-0 mt-[2px]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 9v2m0 4h.01M12 5a7 7 0 11-7 7 7 7 0 017-7z" />
+          </svg>
+          <span class="font-semibold">Important Terms</span>
+        </div>
+        <ul class="list-disc list-inside space-y-1 text-[#333333] ml-1">
+          <li>You have 10 days to approve each milestone</li>
+          <li>Funds are only released after your approval or after 10 days</li>
+          <li>In case of disputes, payouts are paused</li>
+          <li>Platform fees: 1.5%</li>
+        </ul>
+      </div>
+
+      <!-- Agree to terms -->
+      <div class="mt-4 flex items-center gap-2 text-sm text-gray-700">
+        <input
+          id="agree"
+          type="checkbox"
+          class="appearance-none w-4 h-4 border border-gray-500 rounded-sm bg-transparent
+                 checked:bg-blue-500 checked:border-blue-500
+                 checked:before:content-['✓'] checked:before:text-white
+                 checked:before:flex checked:before:items-center checked:before:justify-center
+                 checked:before:text-[10px] cursor-pointer transition"
+          [formControl]="$any(projectForm.get('agreeTerms'))"
+        />
+        <label for="agree" class="select-none">
+          I agree to the
+          <a href="#" class="text-blue-500 font-semibold hover:underline">Terms & Conditions</a>
+          and the
+          <a href="#" class="text-blue-500 font-semibold hover:underline">Privacy Policy</a>.
+        </label>
+      </div>
+    </div>
+
+
+  </div>
+</ng-container>
+
+
+        <!-- Buttons -->
+        <div class="flex flex-col sm:flex-row justify-between mt-8 gap-3">
+          <button class="px-5 py-2 text-sm border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
+                  type="button" (click)="back()" [disabled]="isActiveN(1)">
+            Back
+          </button>
+
+          <div class="flex gap-3 w-full sm:w-auto">
+            <button class="px-5 py-2 text-sm border border-sky-300 text-sky-500 rounded-lg hover:bg-sky-50"
+                    type="button">
+              Save as Draft
+            </button>
+
+      <button *ngIf="!isActiveN(4)" type="button" (click)="next()"
+        class="px-6 py-2 text-sm bg-sky-500 hover:bg-sky-600 text-white rounded-lg">
+  Next
+</button>
+
+
+            <button *ngIf="isActiveN(4)" (click)="submit()"
+                    class="px-6 py-2 text-sm bg-sky-500 hover:bg-sky-600 text-white rounded-lg">
+              Submit
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>

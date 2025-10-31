@@ -1,0 +1,62 @@
+<div class="bg-white shadow-md rounded-xl w-full max-w-7xl p-10 md:p-12">
+  <!-- Header -->
+  <div class="mb-6">
+    <h2 class="text-[18px] font-semibold text-gray-900">Project files</h2>
+    <p class="text-sm text-gray-500">Documents and photos of the project</p>
+  </div>
+
+  <hr class="border-gray-200 mb-6" />
+
+  <!-- Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <!-- Card -->
+    <div
+      *ngFor="let f of files; trackBy: f?.id"
+      class="border border-gray-200 rounded-lg p-4 flex flex-col justify-between"
+    >
+      <!-- Image preview or file icon -->
+      <ng-container *ngIf="isImage(f); else nonImage">
+        <img
+          [src]="f.thumb || f.url"
+          [alt]="f.name"
+          class="rounded-md object-cover h-40 w-full"
+        />
+      </ng-container>
+
+      <ng-template #nonImage>
+        <div class="bg-blue-50 h-40 w-full flex items-center justify-center rounded-md">
+          <div class="bg-[#00AEEF] p-4 rounded-full">
+            <!-- plus/file icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 4v16m8-8H4"/>
+            </svg>
+          </div>
+        </div>
+      </ng-template>
+
+      <!-- Meta -->
+      <div class="mt-3">
+        <p class="text-[14px] font-semibold text-gray-800 truncate" title="{{ f.name }}">
+          {{ f.name }}
+        </p>
+        <p class="text-xs text-gray-500 mt-1">
+          {{ uploadedLabel(f) }} • {{ sizeLabel(f) }}
+        </p>
+      </div>
+
+      <!-- Download -->
+      <button
+        (click)="download(f)"
+        class="mt-4 w-full flex items-center justify-center gap-2 border border-gray-300 text-gray-800 font-semibold text-sm py-2 rounded-md hover:bg-gray-50 transition"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4"/>
+        </svg>
+        Download
+      </button>
+    </div>
+  </div>
+</div>

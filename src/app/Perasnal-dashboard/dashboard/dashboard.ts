@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { CurrencyPipe, DatePipe, NgFor, NgIf } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 type ProjectStatus = 'in-progress' | 'pending' | 'completed';
 
@@ -17,7 +18,7 @@ interface Project {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, NgFor, NgIf, CurrencyPipe, DatePipe],
+  imports: [CommonModule, NgFor, NgIf, CurrencyPipe, DatePipe,RouterLink],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css']
 })
